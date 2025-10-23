@@ -16,13 +16,13 @@ defmodule LiveSync.LivePageOperations do
     {:ok, assign(socket, organization_id: 1, examples: [data], data: data, test: session["test"])}
   end
 
-  def sync(:examples, updated, socket, operations) do
+  def sync(:examples, updated, operations, socket) do
     updates = Enum.sort_by(updated, & &1.name)
     send(self(), {:synced_with_list, operations})
     assign(socket, examples: updates)
   end
 
-  def sync(:data, value, socket, operation) do
+  def sync(:data, value, operation, socket) do
     data = Repo.preload(value, [:parent, :children])
     send(self(), {:synced_with_record, operation})
     assign(socket, data: data)

@@ -22,7 +22,7 @@ defmodule LiveSync.LivePageMixed do
     assign(socket, examples: updates)
   end
 
-  def sync(:data, value, socket, operation) do
+  def sync(:data, value, operation, socket) do
     data = Repo.preload(value, [:parent, :children])
     send(self(), {:synced_with_record, operation})
     assign(socket, data: data)

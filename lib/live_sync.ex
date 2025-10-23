@@ -115,7 +115,7 @@ defmodule LiveSync do
 
   If you want to also receive a list of operations, you can add the following callback:
 
-      def sync(:list_of_objects, updated, socket, operations) do
+      def sync(:list_of_objects, updated, operations, socket) do
         updates =
           updated
           |> Enum.filter(&is_nil(&1.executed_at))
@@ -173,7 +173,7 @@ defmodule LiveSync do
       on_mount({LiveSync, unquote(opts)})
 
       def sync(key, value, socket), do: assign(socket, key, value)
-      def sync(key, value, socket, _operations), do: sync(key, value, socket)
+      def sync(key, value, _operations, socket), do: sync(key, value, socket)
 
       @before_compile {LiveSync, :add_sync_fallback}
 
@@ -185,7 +185,7 @@ defmodule LiveSync do
   defmacro add_sync_fallback(_env) do
     quote do
       def sync(key, value, socket), do: assign(socket, key, value)
-      def sync(key, value, socket, _operations), do: sync(key, value, socket)
+      def sync(key, value, _operations, socket), do: sync(key, value, socket)
     end
   end
 

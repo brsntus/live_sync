@@ -81,7 +81,7 @@ defmodule LiveSync.Socket do
           operations
       end
 
-    socket.view.sync(key, value, socket, operations)
+    socket.view.sync(key, value, operations, socket)
   end
 
   # TODO: changesets
