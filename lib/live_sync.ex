@@ -159,10 +159,11 @@ defmodule LiveSync do
       on_mount({LiveSync, unquote(opts)})
 
       def sync(key, value, socket), do: assign(socket, key, value)
+      def sync(key, value, socket, _operations), do: sync(key, value, socket)
 
       @before_compile {LiveSync, :add_sync_fallback}
 
-      defoverridable sync: 3
+      defoverridable sync: 3, sync: 4
     end
   end
 
@@ -170,6 +171,7 @@ defmodule LiveSync do
   defmacro add_sync_fallback(_env) do
     quote do
       def sync(key, value, socket), do: assign(socket, key, value)
+      def sync(key, value, socket, _operations), do: sync(key, value, socket)
     end
   end
 
