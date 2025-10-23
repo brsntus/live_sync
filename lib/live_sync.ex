@@ -112,6 +112,20 @@ defmodule LiveSync do
 
         assign(socket, list_of_objects: updates)
       end
+
+  If you want to also receive a list of operations, you can add the following callback:
+
+      def sync(:list_of_objects, updated, socket, operations) do
+        updates =
+          updated
+          |> Enum.filter(&is_nil(&1.executed_at))
+          |> Enum.sort_by(& &1.name)
+          |> Repo.preload([...])
+      end
+
+  > #### Note {: .neutral}
+  >
+  > For operations in a single record, operations will be an atom of :insert, :update or :delete.
   """
   use Supervisor
 
